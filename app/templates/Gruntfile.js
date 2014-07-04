@@ -39,20 +39,12 @@ module.exports = function(grunt) {
     },
 
     usemin: {
-      html: {
-        src: '<%%= xh.build %>',
-        cwd: '<%%= xh.src %>/includes/',
-        expand: true
-      },
-
-      options: {
-        assetsDirs: ['<%%= xh.src %>/includes/']
-      }
+      html: '<%%= xh.dist %>/*.html'
     },
 
-
     clean: {
-      src: [".tmp"]
+      tmp: { src: ['.tmp'] },
+      dist: { src: ['<%%= xh.dist %>'] }
     },
 
     // HTML Includes
@@ -107,7 +99,9 @@ module.exports = function(grunt) {
           '<%%= xh.dist %>/css/main.css': '<%%= xh.src %>/scss/main.scss'
         }
       }
-    }, <% } %><% if (cssPreprocessor === 'LESS') { %>
+    },<% } %>
+
+    <% if (cssPreprocessor === 'LESS') { %>
     less: {
       dist: {
         options: {
@@ -153,30 +147,14 @@ module.exports = function(grunt) {
         src: 'main.js',
         dest: '<%%= xh.dist %>/js/',
         expand: true
-      },<% if (isWP) { %>
+      }<% if (isWP) { %>,
 
       wp: {
         cwd: '<%%= xh.dist %>/',
         src: ['**', '!_xprecise', '!*.html'],
         dest: '<%= wpThemeFolder  %>',
         expand: true
-      },<% } %>
-
-      // Backup include files
-      backup: {
-        cwd: '<%%= xh.src %>/includes/',
-        src: '<%%= xh.build %>',
-        dest: '.tmp',
-        expand: true
-      },
-
-      // Restore include files
-      restore: {
-        cwd: '.tmp',
-        src: '<%%= xh.build %>',
-        dest: '<%%= xh.src %>/includes/',
-        expand: true
-      }
+      }<% } %>
     },
 
     jshint: {
@@ -317,10 +295,8 @@ module.exports = function(grunt) {
         tasks: [
           'useminPrepare',
           'concat',
-          'copy:backup',
-          'usemin',
           'includereplace',
-          'copy:restore',
+          'usemin',
           'jsbeautifier:html',<% if (isWP) { %>
           'copy:wp',<% } %>
           'clean'
@@ -342,15 +318,15 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('default', [
+    'clean:dist',
+
     // HTML
     'useminPrepare',
     'concat',
-    'copy:backup',
-    'usemin',
     'includereplace',
-    'copy:restore',
+    'usemin',
     'jsbeautifier:html',
-    'clean',
+    'clean:tmp',
 
     // CSS
     <% if (cssPreprocessor === 'SCSS') { %>
