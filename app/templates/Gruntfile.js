@@ -39,20 +39,12 @@ module.exports = function(grunt) {
     },
 
     usemin: {
-      html: {
-        src: '<%%= xh.build %>',
-        cwd: '<%%= xh.src %>/includes/',
-        expand: true
-      },
-
-      options: {
-        assetsDirs: ['<%%= xh.src %>/includes/']
-      }
+      html: '<%%= xh.dist %>/*.html'
     },
 
-
     clean: {
-      src: [".tmp"]
+      tmp: { src: ['.tmp'] },
+      dist: { src: ['<%%= xh.dist %>'] }
     },
 
     // HTML Includes
@@ -107,7 +99,8 @@ module.exports = function(grunt) {
           '<%%= xh.dist %>/css/main.css': '<%%= xh.src %>/scss/main.scss'
         }
       }
-    }, <% } %><% if (cssPreprocessor === 'LESS') { %>
+    },<% } %> <% if (cssPreprocessor === 'LESS') { %>
+
     less: {
       dist: {
         options: {
@@ -153,30 +146,14 @@ module.exports = function(grunt) {
         src: 'main.js',
         dest: '<%%= xh.dist %>/js/',
         expand: true
-      },<% if (isWP) { %>
+      }<% if (isWP) { %>,
 
       wp: {
         cwd: '<%%= xh.dist %>/',
         src: ['**', '!_xprecise', '!*.html'],
         dest: '<%= wpThemeFolder  %>',
         expand: true
-      },<% } %>
-
-      // Backup include files
-      backup: {
-        cwd: '<%%= xh.src %>/includes/',
-        src: '<%%= xh.build %>',
-        dest: '.tmp',
-        expand: true
-      },
-
-      // Restore include files
-      restore: {
-        cwd: '.tmp',
-        src: '<%%= xh.build %>',
-        dest: '<%%= xh.src %>/includes/',
-        expand: true
-      }
+      }<% } %>
     },
 
     jshint: {
@@ -187,8 +164,8 @@ module.exports = function(grunt) {
       dist: {
         src: ['<%%= xh.src %>/js/main.js', '<%%= xh.dist %>/js/main.js'],
       }
-    },
-    <% if (useModernizr) { %>
+    },<% if (useModernizr) { %>
+
     uglify: {
       modernizr: {
         files: {
@@ -296,31 +273,35 @@ module.exports = function(grunt) {
     },
 
     // Watch
-    watch: {<% if (cssPreprocessor === 'SCSS') { %>
+    watch: {
+      options: {
+        spawn: false
+      },<% if (cssPreprocessor === 'SCSS') { %>
+
       scss: {
         files: ['<%%= xh.src %>/scss/*.scss'],
-        tasks: ['sass', 'autoprefixer', 'cssbeautifier', 'search', 'replace:css'<% if (isWP) { %>, 'copy:wp'<% } %>],
-        options: {
-          livereload: true
-        }
+        tasks: ['sass', 'autoprefixer', 'cssbeautifier', 'search', 'replace:css'<% if (isWP) { %>, 'copy:wp'<% } %>]
       },<% } %><% if (cssPreprocessor === 'LESS') { %>
+
       less: {
         files: ['<%%= xh.src %>/less/*.less'],
-        tasks: ['less', 'autoprefixer', 'cssbeautifier', 'search', 'replace:css'<% if (isWP) { %>, 'copy:wp'<% } %>],
+        tasks: ['less', 'autoprefixer', 'cssbeautifier', 'search', 'replace:css'<% if (isWP) { %>, 'copy:wp'<% } %>]
+      },<% } %>
+
+      css: {
+        files: ['<%%= xh.dist %>/css/*.css'],
         options: {
           livereload: true
         }
-      },<% } %>
+      },
 
       html: {
         files: ['<%%= xh.src %>/*.html', '<%%= xh.src %>/includes/*.html'],
         tasks: [
           'useminPrepare',
           'concat',
-          'copy:backup',
-          'usemin',
           'includereplace',
-          'copy:restore',
+          'usemin',
           'jsbeautifier:html',<% if (isWP) { %>
           'copy:wp',<% } %>
           'clean'
@@ -342,15 +323,15 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('default', [
+    'clean:dist',
+
     // HTML
     'useminPrepare',
     'concat',
-    'copy:backup',
-    'usemin',
     'includereplace',
-    'copy:restore',
+    'usemin',
     'jsbeautifier:html',
-    'clean',
+    'clean:tmp',
 
     // CSS
     <% if (cssPreprocessor === 'SCSS') { %>
