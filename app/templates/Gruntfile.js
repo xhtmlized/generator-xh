@@ -274,21 +274,27 @@ module.exports = function(grunt) {
     },
 
     // Watch
-    watch: {<% if (cssPreprocessor === 'SCSS') { %>
+    watch: {
+      options: {
+        spawn: false
+      },<% if (cssPreprocessor === 'SCSS') { %>
+
       scss: {
         files: ['<%%= xh.src %>/scss/*.scss'],
-        tasks: ['sass', 'autoprefixer', 'cssbeautifier', 'search', 'replace:css'<% if (isWP) { %>, 'copy:wp'<% } %>],
-        options: {
-          livereload: true
-        }
+        tasks: ['sass', 'autoprefixer', 'cssbeautifier', 'search', 'replace:css'<% if (isWP) { %>, 'copy:wp'<% } %>]
       },<% } %><% if (cssPreprocessor === 'LESS') { %>
+
       less: {
         files: ['<%%= xh.src %>/less/*.less'],
-        tasks: ['less', 'autoprefixer', 'cssbeautifier', 'search', 'replace:css'<% if (isWP) { %>, 'copy:wp'<% } %>],
+        tasks: ['less', 'autoprefixer', 'cssbeautifier', 'search', 'replace:css'<% if (isWP) { %>, 'copy:wp'<% } %>]
+      },<% } %>
+
+      css: {
+        files: ['<%%= xh.dist %>/css/*.css'],
         options: {
           livereload: true
         }
-      },<% } %>
+      },
 
       html: {
         files: ['<%%= xh.src %>/*.html', '<%%= xh.src %>/includes/*.html'],
