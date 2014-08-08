@@ -66,6 +66,12 @@ var XhGenerator = yeoman.generators.Base.extend({
             value: 'useCSS3Pie',
             checked: false
         }]
+      }, {
+        type: 'list',
+        name: 'reloader',
+        message: 'Which type of live reloader would you like to use?',
+        choices: ['LiveReload', 'BrowserSync'],
+        default: 'BrowserSync'
       }
     ];
 
@@ -76,6 +82,7 @@ var XhGenerator = yeoman.generators.Base.extend({
       this.cssPreprocessor = props.cssPreprocessor;
       this.isWP = props.isWP;
       this.features = props.features;
+      this.reloader = props.reloader;
 
       var features = this.features;
 
