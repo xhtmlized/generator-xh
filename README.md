@@ -171,8 +171,9 @@ yo xh:page “Home”
 
 The command will do the following:
 
-1. creates a HTML file for your page in `src` folder from the template file `src/template.html`. If you want you can update the template file according your needs, so the generated files look accordingly.
-2. adds a page name and link to the project index
+1. creates a HTML file for your page in `src` folder from the template file `src/template.html`. If you want you can update the template file as needed, so the generated files look accordingly.
+2. adds a page name and link to it to the project index
+3. runs `grunt build` command to generate the page
 
 ![Page added](docs/img/page-added.png)
 

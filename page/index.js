@@ -4,45 +4,59 @@ var yeoman = require('yeoman-generator');
 var config = require(process.cwd() + '/.yo-rc.json')['generator-xh'].config;
 
 var PageGenerator = yeoman.generators.NamedBase.extend({
-  init: function () {
 
-    this.on('end', function () {
-      this.spawnCommand('grunt', ['build']);
-    });
+  initializing: function () {
+    this.pages = process.argv.slice(3);
+    this.reserved = ['template', 'wp'];
 
-    this.slug = this._.slugify(this.name);
-    var reserved = ['main', 'variables', 'mixins', 'common', 'wordpress', 'wp'];
+    this.isNotReserved = function(element) {
+      if (this.reserved.indexOf(this._.slugify(element)) === -1) {
+        return element;
+      }
+    };
 
-    if (!this.name) {
+    if (!this.pages.length) {
       this.log('Name cannot be empty.');
-      process.exit();
-    } else if (reserved.indexOf(this.slug) >= 0) {
-      this.log('You cannot use reserved words - main, variables, mixins, common, wordpress, wp - as a page name.');
       process.exit();
     }
 
-    this.log('Creating page ' + this.name + '.');
+    if (!this.pages.every(this.isNotReserved, this)) {
+      this.log('You cannot use those reserved words as a page name: ' + this.reserved.join(', ') + '.');
+      process.exit();
+    }
   },
 
-  // Create HTML page and list it on the project index file
-  addHTML: function () {
-    var filename = this.slug + '.html';
-    var filepath = 'src/' + filename;
+  writing: function () {
+    // Create pages from template
+    this.generatePage = function(element) {
+      this.templateFile = this.readFileAsString('src/template.html');
+      this.filename = this._.slugify(element) + '.html';
 
-    var pageTemplate = this.readFileAsString('src/template.html');
+      // Write file
+      this.write('src/' + this.filename, this.templateFile.replace('<%= name %>', element));
+    };
 
-    var projectIndex = this.readFileAsString('index.html');
-    var pageLink = '<li><i class="fa fa-file-o"></i><a href="dist/' + filename + '"><strong>' +
-      this.name + '</strong> ' + filename + '</a><i class="fa fa-check"></i></li>\n' +
-      '<!-- @@pageList -->';
+    // Update index template
+    this.updateIndex = function(array) {
+      this.indexFile = this.readFileAsString('index.html');
+      this.link = '';
 
-    // Create page from template
-    pageTemplate = pageTemplate.replace('<%= name %>', this.name);
-    this.write(filepath, pageTemplate);
+      array.forEach(function(element) {
+        this.filename = this._.slugify(element) + '.html';
+        this.link += '<li><i class="fa fa-file-o"></i><a href="dist/' + this.filename + '"><strong>' +
+          element + '</strong> ' + this.filename + '</a><i class="fa fa-check"></i></li>\n';
+      }, this);
 
-    // Project index
-    projectIndex = projectIndex.replace('<!-- @@pageList -->', pageLink);
-    this.write('index.html', projectIndex);
+      // Write file
+      this.write('index.html', this.indexFile.replace('<!-- @@pageList -->', this.link + '<!-- @@pageList -->'));
+    };
+
+    this.pages.forEach(this.generatePage, this);
+    this.updateIndex(this.pages);
+  },
+
+  end: function () {
+    this.spawnCommand('grunt', ['build']);
   }
 
 });

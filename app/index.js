@@ -206,8 +206,9 @@ var XhGenerator = yeoman.generators.Base.extend({
 
     // JS
     this.template('src/js/_main.js', 'src/js/main.js');
+
     if (this.useCSS3Pie) {
-      this.copy('src/js/_PIE.htc', 'dist/js/PIE.htc');
+      this.copy('src/js/_PIE.htc', 'src/js/PIE.htc');
     }
   }
 });

@@ -199,7 +199,7 @@ module.exports = function(grunt) {
       js: {
         expand: true,
         cwd: '<%%= xh.src %>/js/',
-        src: ['main.js'],
+        src: ['main.js'<% if (useCSS3Pie) { %>, 'PIE.htc'<% } %>],
         dest: '<%%= xh.dist %>/js/'
       },<% if (isWP) { %>
 
