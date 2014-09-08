@@ -16,4 +16,6 @@
 @import "variables";
 @import "mixins";
 @import "common";<% if (isWP) { %>
-@import "wordpress";<% } %>
+@import "wordpress";<% } %><% if (cssPreprocessor === 'LIBSASS') { %>
+
+/*# sourceMappingURL=main.css.map */<% } %>

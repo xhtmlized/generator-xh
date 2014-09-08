@@ -1,6 +1,8 @@
 XH Generator [![Build Status](https://travis-ci.org/xhtmlized/generator-xh.svg?branch=master)](https://travis-ci.org/xhtmlized/generator-xh) [![NPM version](https://badge.fury.io/js/generator-xh.svg)](http://badge.fury.io/js/generator-xh)
 ============
 
+[![NPM](https://nodei.co/npm/generator-xh.png?downloads=true)](https://nodei.co/npm/generator-xh/)
+
 XH Generator is a [Yeoman](http://yeoman.io) generator for scaffolding web projects. XH is suitable for client work when you deliver a completed project to your client for further review and development.
 
 XH Generator creates a project structure, files and Grunt tasks which support modern workflows like CSS preprocessors. Built HTML, CSS and JS files are prettified and fully editable so clients can work directly with them if they wish.
@@ -27,6 +29,7 @@ XH Generator creates a project structure, files and Grunt tasks which support mo
 - [Tips & Tricks](#tips--tricks)
  - [Working with files in the dist folder](#working-with-files-in-the-dist-folder)
  - [Writing styles](#writing-styles)
+ - [LibSass notices](#libsass-notices)
  - [Adding 3rd party dependency via Bower](#adding-3rd-party-dependency-via-bower)
 - [Changelog](#changelog)
 - [Contributing](#contributing)
@@ -40,8 +43,11 @@ XH Generator creates a project structure, files and Grunt tasks which support mo
 - A sub generator for adding pages to the project
 - Industry standard [normalize.css](http://necolas.github.io/normalize.css/) as a base stylesheet
 - CSS Preprocessing with [SCSS](http://http://sass-lang.com/) or [Less](http://lesscss.org/)
+- Support for both [LibSass](http://libsass.org/) (default) and [Ruby version](http://sass-lang.com/install) when using SCSS
 - Optional libraries like [Bootstrap](http://getbootstrap.com/), [Modernizr](http://modernizr.com/) & [CSS3 Pie](http://css3pie.com/)
 - Add vendor-prefixed CSS properties with [autoprefixer](https://github.com/nDmitry/grunt-autoprefixer)
+- Live reload and browsers syncing with [BrowserSync](http://www.browsersync.io/) or LiveReload
+- Optional development server
 - Grunt tasks for prettifying built HTML / CSS / JS
 - Auto generated table of contents in main.css
 - Functionality for merging JS libraries to reduce number of HTTP requests
@@ -60,8 +66,8 @@ The following software needs to be installed if you want to use XH Generator. Th
 
 Install [Node.js](http://nodejs.org/) so you can work with `npm`, Node package manager.
 
-### 2) Sass
-If you want to use SCSS for CSS preprocessing (SCSS is a default option), you will need to install [Ruby](https://www.ruby-lang.org/en/installation/) and [Sass](http://sass-lang.com/install). Once Ruby is installed (on Mac it comes preinstalled), install the Sass preprocessor from the command line.
+### 2) Sass _(Optional)_
+If you want to use SCSS for CSS preprocessing and need to use original ruby compiler ([LibSass](http://libsass.org/) - a C version of Sass compiler is the default option), you will need to install [Ruby](https://www.ruby-lang.org/en/installation/) and [Sass](http://sass-lang.com/install). Once Ruby is installed (on Mac it comes preinstalled), install the Sass preprocessor from the command line.
 
 ```
 gem install sass
@@ -125,7 +131,7 @@ The generated project structure will look like this:
 
 The meaning of files and folders are as follows:
 
-- **dist** - production / preview files are automatically generated here, this is where you check your work in a browser. 
+- **dist** - production / preview files are automatically generated here, this is where you check your work in a browser.
 - **node_modules** - Node.js modules for various Grunt tasks, usually you don’t have to do anything about this folder
 - **src** - source files, development is done here
  - **bower_components** - 3rd party libraries managed via [Bower](http://bower.io/)
@@ -136,7 +142,7 @@ The meaning of files and folders are as follows:
     - `_mixins.scss` / `mixins.less` - mixins file
     - `_common.scss` / `common.less` - common styles with some minimal default styling
     - `_wp.scss` / `wp.less` -  [WordPress styles](http://codex.wordpress.org/CSS) for images and captions (in WP projects)
- - **js** 
+ - **js**
     - `main.js` is a main JS file in project
  - `home.html`, etc. - HTML files composed from HTML partials
 - `index.html` - project index with project pages listed
@@ -155,7 +161,7 @@ On a typical project, you will work in `src` folder and check your work in `dist
 
 ### 3) Adding pages to the project
 
-Once you have basic project structure generated, you should add pages you will be working on. XH Generator comes with a subgenerator for adding new pages to the project. 
+Once you have basic project structure generated, you should add pages you will be working on. XH Generator comes with a subgenerator for adding new pages to the project.
 
 From the command line type:
 
@@ -167,6 +173,12 @@ for example
 
 ```
 yo xh:page “Home”
+```
+
+You can also create multiple pages at once by separating page names with space:
+
+```
+yo xh:page “Home” “About Us” “Contact Us” “News”
 ```
 
 The command will do the following:
@@ -201,7 +213,7 @@ grunt build
 
 ![grunt command](docs/img/grunt.png)
 
-If everything went ok, the preview files will be generated and you will be able to check your work in the `dist` folder. XH Generator doesn't create a server, so you need to preview files on your existing local web server.
+If everything went ok, the preview files will be generated and you will be able to check your work in the `dist` folder.
 
 To re-compile HTML / SCSS file in real time you can use default task. Type
 
@@ -209,7 +221,7 @@ To re-compile HTML / SCSS file in real time you can use default task. Type
 grunt
 ```
 
-and this will start a task that will watch for changes in files and recompile them as needed. Now you can also connect with a [LiveReload browser extension](http://feedback.livereload.com/knowledgebase/articles/86242-how-do-i-install-and-use-the-browser-extensions) to enable live reloads in your browser.
+and this will start a task that will watch for changes in files and recompile them as needed. If relevant options were selected during project setup, development server may be started and/or BrowserSync (or LiveReload) scripts injected.
 
 ![grunt watch command](docs/img/grunt-watch.png)
 
@@ -311,7 +323,13 @@ The following approach is recommended when creating styles:
 2. Use variables and mixins files to store your variables and mixins.
 3. Depending on your preferences for styles organization, you can organize them according modules & components (recommended), or pages.
 4. Comment [main sections and subsections](https://github.com/xhtmlized/css-coding-standards#comments) appropriately.
-5. If you want to avoid using preprocessors for certain reason (eg. your project is very simple), you can still use SCSS or Less files to write only regular CSS. In such case use Less as it's [faster than Ruby Saas](http://www.solitr.com/blog/2014/01/css-preprocessor-benchmark/).
+5. If you want to avoid using preprocessors for certain reason (eg. your project is very simple), you can still use SCSS or Less files to write only regular CSS. In such case use the default LibSass or Less as they are [faster than Ruby Sass](http://www.solitr.com/blog/2014/01/css-preprocessor-benchmark/).
+
+### LibSass notices
+
+LibSass is much faster than Ruby Sass, however some features of Ruby Sass [may not yet be ported there or a bit faulty](http://benfrain.com/libsass-lightning-fast-sass-compiler-ready-prime-time/). Sometimes project requiremens force you to choose Ruby version over LibSass as some features of the libraries you would like to use may not be available in LibSass (like automatic sprite generation from [Compass](http://compass-style.org/)).
+
+You can browse or add LibSass issues at [LibSass GitHub](https://github.com/sass/libsass/issues) page. One of the issues is a lack of support for the map (hash) datatype. If you need this feature when using LibSass, take a look at [Sass List–Maps](https://github.com/lunelson/sass-list-maps).
 
 ### Adding 3rd party dependency via Bower
 

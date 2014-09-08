@@ -20,7 +20,9 @@ module.exports = function(grunt) {
     xh: {
       src: 'src',
       dist: 'dist',
-      build: ['head.html', 'scripts.html']
+      tmp: '.tmp',
+      build: ['head.html', 'scripts.html'],
+      root: __dirname
     },
 
     useminPrepare: {
@@ -53,7 +55,7 @@ module.exports = function(grunt) {
     },
 
     clean: {
-      tmp: { src: ['.tmp'] },
+      tmp: { src: ['<%%= xh.tmp %>'] },
       dist: { src: ['<%%= xh.dist %>/*.html', '<%%= xh.dist %>/css', '<%%= xh.dist %>/js', '<%%= xh.dist %>/fonts'] }
     },
 
@@ -107,26 +109,42 @@ module.exports = function(grunt) {
     },
 
     // CSS
-    <% if (cssPreprocessor === 'SCSS') { %>
-    sass: {
+    <% if (cssPreprocessor === 'SCSS') { %>sass: {
       dist: {
         options: {
           style: 'expanded',
           sourcemap: true,
-          loadPath: 'src/bower_components/'
+          loadPath: '<%%= xh.src %>/bower_components/'
         },
         files: {
           '<%%= xh.dist %>/css/main.css': '<%%= xh.src %>/scss/main.scss'
         }
       }
-    },<% } %> <% if (cssPreprocessor === 'LESS') { %>
+    },<% } %><% if (cssPreprocessor === 'LESS') { %>
     less: {
       dist: {
         options: {
-          path: 'src/bower_components/'
+          path: '<%%= xh.src %>/bower_components/'
         },
         files: {
           '<%%= xh.dist %>/css/main.css': '<%%= xh.src %>/less/main.less'
+        }
+      }
+    },<% } %><% if (cssPreprocessor === 'LIBSASS') { %>
+    sass: {
+      dist: {
+        options: {
+          outputStyle: 'expanded',
+          imagePath: '../img',
+          includePaths: [
+            '<%%= xh.src %>/bower_components'
+          ],
+          // for some reason sourceMaps will have correct path only when
+          // absolute source map path is used
+          sourceMap: '<%%= xh.root %>/<%%= xh.dist %>/css/main.css.map'
+        },
+        files: {
+          '<%%= xh.dist %>/css/main.css': '<%%= xh.src %>/scss/main.scss'
         }
       }
     },<% } %>
@@ -148,7 +166,7 @@ module.exports = function(grunt) {
     // JS
     copy: {
       normalize: {
-        src: '<%%= xh.src %>/bower_components/normalize.css/normalize.css',<% if (cssPreprocessor === 'SCSS') { %>
+        src: '<%%= xh.src %>/bower_components/normalize.css/normalize.css',<% if (cssPreprocessor === 'SCSS' || cssPreprocessor === 'LIBSASS') { %>
         dest: '<%%= xh.src %>/bower_components/normalize.css/normalize.scss'<% } %><% if (cssPreprocessor === 'LESS') { %>
         dest: '<%%= xh.src %>/bower_components/normalize.css/normalize.less'<% } %>
       },
@@ -215,13 +233,13 @@ module.exports = function(grunt) {
         expand: true,
         cwd: '<%%= xh.src %>/includes/',
         src: '<%%= xh.build %>',
-        dest: '.tmp'
+        dest: '<%%= xh.tmp %>'
       },
 
       // Restore include files
       restore: {
         expand: true,
-        cwd: '.tmp',
+        cwd: '<%%= xh.tmp %>',
         src: '<%%= xh.build %>',
         dest: '<%%= xh.src %>/includes/'
       }
@@ -233,7 +251,7 @@ module.exports = function(grunt) {
         force: true
       },
       dist: {
-        src: ['<%%= xh.src %>/js/main.js', '<%%= xh.dist %>/js/main.js'],
+        src: ['<%%= xh.src %>/js/main.js']
       }
     },<% if (useModernizr) { %>
 
@@ -258,12 +276,13 @@ module.exports = function(grunt) {
         {
           from: '@@toc',
           to: function () {
+            var tmp = grunt.config.get('xh.tmp');
 
-            if (!grunt.file.exists('csstoc.json')) {
+            if (!grunt.file.exists(tmp + '/csstoc.json')) {
               return '';
             }
 
-            var toc_file = grunt.file.readJSON('csstoc.json')
+            var toc_file = grunt.file.readJSON(tmp + '/csstoc.json');
             var files = toc_file.results;
             var toc = '';
             var i = 1;
@@ -286,7 +305,7 @@ module.exports = function(grunt) {
                     match = match.split('/').pop();
                     match = capitalize(match);
 
-                    if (match !== 'Variables' && match !== 'Mixins') {
+                    if (['Variables', 'Mixins', 'Placeholders'].indexOf(match) === -1) {
                       toc += '\n    ' + i + '. ' + match;
                       i++;
                     }
@@ -340,14 +359,14 @@ module.exports = function(grunt) {
     // Create list of @imports
     search: {
       imports: {
-        files: {<% if (cssPreprocessor === 'SCSS') { %>
+        files: {<% if (cssPreprocessor === 'SCSS' || cssPreprocessor === 'LIBSASS') { %>
           src: ['<%%= xh.src %>/scss/main.scss']<% } %><% if (cssPreprocessor === 'LESS') { %>
           src: ['<%%= xh.src %>/less/main.less']<% } %>
         },
         options: {
           searchString: /@import[ \("']*([^;]+)[;\)"']*/g,
-          logFormat: "json",
-          logFile: "csstoc.json"
+          logFormat: 'json',
+          logFile: '<%%= xh.tmp %>/csstoc.json'
         }
       }
     }<% if (reloader === 'BrowserSync') { %>,
@@ -366,7 +385,7 @@ module.exports = function(grunt) {
         options: {
           watchTask: true,<% if (server) { %>
           server: {
-            baseDir: "./",
+            baseDir: './',
             port: 3000
           },<% } %>
           notify: false
@@ -396,7 +415,7 @@ module.exports = function(grunt) {
       },
 
       compileCSS: {
-        files: [<% if (cssPreprocessor === 'SCSS') { %>'<%%= xh.src %>/scss/**/*.scss'<% } %><% if (cssPreprocessor === 'LESS') { %>'<%%= xh.src %>/less/**/*.less'<% } %>],
+        files: [<% if (cssPreprocessor === 'SCSS' || cssPreprocessor === 'LIBSASS') { %>'<%%= xh.src %>/scss/**/*.scss'<% } %><% if (cssPreprocessor === 'LESS') { %>'<%%= xh.src %>/less/**/*.less'<% } %>],
         tasks: ['build-css'<% if (isWP) { %>, 'copy:wp'<% } %>]
       }<% if (reloader === 'LiveReload') { %>,
 
@@ -449,13 +468,14 @@ module.exports = function(grunt) {
     'copy:assets'
   ]);
 
-  grunt.registerTask('build-css', [<% if (cssPreprocessor === 'SCSS') { %>
+  grunt.registerTask('build-css', [<% if (cssPreprocessor === 'SCSS' || cssPreprocessor === 'LIBSASS') { %>
     'sass',<% } %><% if (cssPreprocessor === 'LESS') { %>
     'less',<% } %>
     'autoprefixer',
     'cssbeautifier',
     'search',
-    'replace:css'
+    'replace:css',
+    'clean:tmp'
   ]);
 
   grunt.registerTask('build-js', [

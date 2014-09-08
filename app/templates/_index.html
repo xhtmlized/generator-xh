@@ -1,210 +1,211 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <title>Project Index - <%= projectName %></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"><% if (useBranding) { %>
-    <link rel="shortcut icon" href="http://cssonsails.org/framework/img/favicon.png"><% } %>
-    <!--[if lt IE 9]>
-        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css" rel="stylesheet">
-    <style>
-    <!--
-        html, body, div, span, h1, h2, h3, h4, h5, h6, p, pre, a, abbr, acronym, code, em, img, strong, sub, sup, dl, dt, dd, ol, ul, li { margin: 0; padding: 0; border: 0; font-size: 100%; vertical-align: baseline; background: transparent; }
-        article, aside, figure, footer, header, hgroup, nav, section { display: block; }
-        body { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; margin: 0; padding: 0 20px; min-width: 280px; background: #eaeaea; color: #666; font: normal 15px/1.3 'Helvetica Neue', Helvetica, Arial, sans-serif; }
-        h1, h2, h3 { line-height: 1.0; }
-        ul li { list-style: none; }
-        a { color: #999; text-decoration: none; }
-        a:hover { color: #333; text-decoration: underline; }
+  <meta charset="utf-8" />
+  <title>Project Index - <%= projectName %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"><% if (useBranding) { %>
+  <link rel="shortcut icon" href="https://raw.githubusercontent.com/xhtmlized/generator-xh/master/docs/img/favicon.png"><% } %>
+  <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+  <style>
+  <!--
+    html, body, div, span, h1, h2, h3, h4, h5, h6, p, pre, a, abbr, acronym, code, em, img, strong, sub, sup, dl, dt, dd, ol, ul, li { margin: 0; padding: 0; border: 0; font-size: 100%; vertical-align: baseline; background: transparent; }
+    article, aside, figure, footer, header, hgroup, nav, section { display: block; }
+    body { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; margin: 0; padding: 0 20px; min-width: 280px; background: #eaeaea; color: #666; font: normal 15px/1.3 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+    h1, h2, h3 { line-height: 1.0; }
+    ul li { list-style: none; }
+    a { color: #999; text-decoration: none; }
+    a:hover { color: #333; text-decoration: underline; }
 
-        .container { margin: 80px auto; max-width: 1240px; padding: 70px 0 0; background: #fff; border: 2px solid #e5e5e5; border-width: 0 2px 2px 0; }
+    .container { margin: 80px auto; max-width: 1240px; padding: 70px 0 0; background: #fff; border: 2px solid #e5e5e5; border-width: 0 2px 2px 0; }
 
-        #header { border-bottom: 1px solid #d7d7d7; margin: 0 5%; padding-bottom: 50px; }
-        #header img { display: block; }
-        #header .site-name { float: right; }
-        #header h1 { font-size: 300%; margin-bottom: 15px;color:#ef4c23;}
-        #header h2 { padding: 5px 10px; font-size: 200%; color: #fff; background: #ef4c23; text-shadow: 0px 0px 2px #666; }
-        #header p { font-size: 200%; }
+    .site-name { float: right; }
+    .header { border-bottom: 1px solid #d7d7d7; margin: 0 5%; padding-bottom: 50px; }
+    .header img { display: block; }
+    .header h1 { font-size: 300%; margin-bottom: 15px;color:#ef4c23;}
+    .header p { font-size: 200%; }
 
-        #content { float: left; width: 60%; margin: 60px 5% 20px 5%; font-size: 100%; }
+    .content { float: left; width: 60%; margin: 60px 5% 20px 5%; font-size: 100%; }
 
-        #content section { padding: 60px 0 0; }
-        #content section:after,
-        #content section.files article li:after,
-        #content section.files header ul li:after,
-        #content section.files header:after,
-        #content section.files article:after,
-        #footer:after { clear: both; content: "."; display: block; height: 0; visibility: hidden; }
+    section:after,
+    .files article li:after,
+    .files header ul li:after,
+    .files header:after,
+    .files article:after,
+    .footer:after { clear: both; content: "."; display: block; height: 0; visibility: hidden; }
 
-        #content section header { float: left; width: 35%; }
-        #content section header h2{  font-size: 160%; color: #999; }
-        #content section article { float: right; width: 65% }
-        #content section article h3 { float: none; width: auto; margin-bottom: 15px; font-size: 160%; }
-        #content section article h3.wip { color: #00a6b6; }
-        #content section article h3.done { color: #00ad69; }
-        #content section p { font-size: 110%; color: #999; }
-        #content section p.credentials { clear: both; padding: 5px 0 0 34px; font-size: 100%; }
-        #content section p strong { color: #666; }
+    section header { float: left; width: 35%; }
+    section header h2 {  font-size: 160%; color: #999; }
+    section article { float: right; width: 65% }
+    section h3 { float: none; width: auto; margin-bottom: 15px; font-size: 160%; }
+    section h3.wip { color: #00a6b6; }
+    section h3.done { color: #00ad69; }
+    section p { font-size: 110%; color: #999; }
+    section p.credentials { clear: both; padding: 5px 0 0 34px; font-size: 100%; }
+    section p strong { color: #666; }
 
-        #content section.status { padding: 0 0 60px; border-bottom: 1px solid #ededed; }
-        #content section.status span { color: #666;}
+    .status { padding: 0 0 60px 0; border-bottom: 1px solid #ededed; }
+    .status span { color: #666; }
 
-        #content section.files { padding: 60px 0 0 0; }
-        #content section.files a:hover { text-decoration: none; }
+    .files { padding: 60px 0 0 0; }
+    .files a:hover { text-decoration: none; }
 
-        #content section.files .done strong { color: #00ad69; }
-        #content section.files .wip strong { color: #00a6b6; }
-        #content section.files header { font-size: 100%}
-        #content section.files header ul { margin: 30px 0 0; }
-        #content section.files header li { padding: 0 0 8px; font-size: 100%; color: #333; }
-        #content section.files header li i { float: left ; width: 20px; height: 20px; margin: 0 10px 0 0; background: #999 }
-        #content section.files header li.done i { background: #00ad69; }
-        #content section.files header li.wip i { background: #00a6b6; }
+    .files .done strong { color: #00ad69; }
+    .files .wip strong { color: #00a6b6; }
+    .files header { font-size: 100%; }
+    .files header ul { margin: 30px 0 0; }
+    .files header li { padding: 0 0 8px; font-size: 100%; color: #333; }
+    .files header li i { float: left ; width: 20px; height: 20px; margin: 0 10px 0 0; background: #999 }
+    .files header li.done i { background: #00ad69; }
+    .files header li.wip i { background: #00a6b6; }
 
-        #content section.files article ul { margin: 0 0 50px;}
-        #content section.files article li { padding: 16px 0; border-bottom: 1px solid #ededed;}
-        #content section.files article li:first-child { padding-top: 0; }
-        #content section.files article li a { float: left;width: 86%; }
-        #content section.files article li a strong { font-size: 140%; float: left; width: 65%; }
-        #content section.files article li span { display: inline-block; margin-top: 6px; width: 35%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; -moz-binding: url(<q>assets/xml/ellipsis.xml#ellipsis</q>); }
-        #content section.files article li i{ font-size: 130%; }
-        .fa-file-o { float: left; width: 5%; margin: 3px 1% 0; }
-        .fa-file-o, .fa-wordpress, .fa-lock { float: left; width: 5%; margin: 3px 1% 0; }
-        .fa-check { float: right; width: 5%; margin: -2px 0 0 2%; color: #333; font-size: 180%!important; visibility: hidden; }
-        .done .fa-check { visibility: visible}
+    .files article ul { margin: 0 0 50px; }
+    .files article li { padding: 16px 0; border-bottom: 1px solid #ededed; }
+    .files article li:first-child { padding-top: 0; }
+    .files article li a { float: left;width: 86%; }
+    .files article li a strong { font-size: 140%; float: left; width: 65%; }
+    .files article li span { display: inline-block; margin-top: 6px; width: 35%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; -moz-binding: url(<q>assets/xml/ellipsis.xml#ellipsis</q>); }
+    .files article li i { font-size: 130%; }
 
-        #sidebar { float: right; width: 25%; margin: 60px 5% 60px 0; }
-        #sidebar p { font-size: 120%; }
-        #sidebar p strong { color: #333; }
+    .fa-file-o { float: left; width: 5%; margin: 3px 1% 0; }
+    .fa-file-o, .fa-wordpress, .fa-lock { float: left; width: 5%; margin: 3px 1% 0; }
+    .fa-check { float: right; width: 5%; margin: -2px 0 0 2%; color: #333; font-size: 180%!important; visibility: hidden; }
+    .done .fa-check { visibility: visible; }
 
-        #sidebar section h3 { margin-bottom: 12px; font-weight: bold; color: #010101; font-size: 120%; }
-        #sidebar section p { margin-bottom: 12px; }
+    .sidebar { float: right; width: 25%; margin: 60px 5% 60px 0; }
+    .sidebar h3 { margin-bottom: 12px; font-weight: bold; color: #010101; font-size: 120%; }
+    .sidebar p { margin-bottom: 12px; font-size: 120%; }
+    .sidebar p strong { color: #333; }
 
-        #footer { clear: both; margin: 0 5%; padding: 60px 0; border-top: 1px solid #d7d7d7; }
-        #footer p { float: left;font-size: 110%; }
-        #footer a { color: #333; display: inline-block; border-bottom: 2px solid #ffda27; font-weight: bold; }
-        #footer a:hover { text-decoration: none; border: none; }
-        #footer img { vertical-align: middle; }
-        #footer .powered { float: right; }
-        @media screen and (max-width: 800px) {
-            body { font-size: 90%; }
-            #sidebar { float: none; width: 90%; margin: 0 5%; padding: 60px 0;  border-top: 1px solid #d7d7d7; }
-            #content { float: none; width: 90%; }
-            #content section.files .legend li { display: block }
-            #content section h3 { float: none; }
-            #content section p,
-            #content section ul { margin: 0 }
-            #content section.files .legend { margin: 20px 0 0; }
-            #content section.files .legend ul,
-            #content section.files .legend ul li { display: block; margin: 0; }
-            #footer { padding-top: 25px; }
-        }
-        @media screen and (max-width: 639px) {
-            body { font-size: 80%; }
-            .container { margin: 40px auto; padding: 40px 0 0; }
-        }
-        @media screen and (max-width: 480px) {
-            body { font-size: 70%; }
-            #content section header { float: none; width: 100%; margin-bottom: 20px; }
-            #content section article { float: none; width: 100%; }
-            #content section { padding: 30px 0 0; }
-            #content section.status,
-            #header { padding: 0 0 30px; }
-            #content section.files,
-            #sidebar,
-            #footer { padding: 30px 0; }
-            #content section.files article ul,
-            #content { margin-bottom: 30px; }
-            #content { margin-top: 30px; }
-            #content section.files header li { float: left; margin-right: 10px; }
-            #content section.files header li i { margin: -3px 10px 0 0; }
-            #content section.files article li span { margin-top: 5px; }
-            #footer p,
-            #footer .powered,
-            #header .site-name { display: block; float: none; margin-bottom: 20px; }
-        }
-        @media screen and (max-width: 320px) {
-            .container { margin: 30px auto; padding: 30px 0 0; }
-            body { font-size: 60%; }
-            #content section.files article li span { margin-top: 3px; }
+    .footer { clear: both; margin: 0 5%; padding: 60px 0; border-top: 1px solid #d7d7d7; }
+    .footer p { float: left; font-size: 110%; }
+    .footer a { color: #333; display: inline-block; border-bottom: 2px solid #ffda27; font-weight: bold; }
+    .footer a:hover { text-decoration: none; border-color: #fff; }
+    .footer img { vertical-align: middle; }
+    .footer .powered { float: right; }
 
-        }
-    -->
-    </style>
+    @media screen and (max-width: 800px) {
+      body { font-size: 90%; }
+      .sidebar { float: none; width: 90%; margin: 0 5%; padding: 60px 0;  border-top: 1px solid #d7d7d7; }
+      .content { float: none; width: 90%; }
+      .files .legend li { display: block }
+      section h3 { float: none; }
+      section p,
+      section ul { margin: 0 }
+      .files .legend { margin: 20px 0 0; }
+      .files .legend ul,
+      .files .legend ul li { display: block; margin: 0; }
+      .footer { padding-top: 25px; }
+    }
+
+    @media screen and (max-width: 639px) {
+      body { font-size: 80%; }
+      .container { margin: 40px auto; padding: 40px 0 0; }
+    }
+
+    @media screen and (max-width: 480px) {
+      body { font-size: 70%; }
+      section header { float: none; width: 100%; margin-bottom: 20px; }
+      section article { float: none; width: 100%; }
+      section { padding: 30px 0 0; }
+      .status,
+      .header { padding: 0 0 30px; }
+      .files,
+      .sidebar,
+      .footer { padding: 30px 0; }
+      .files article ul,
+      .content { margin-bottom: 30px; }
+      .content { margin-top: 30px; }
+      .files header li { float: left; margin-right: 10px; }
+      .files header li i { margin: -3px 10px 0 0; }
+      .files article li span { margin-top: 5px; }
+      .footer p,
+      .footer .powered,
+      .site-name { display: block; float: none; margin-bottom: 20px; }
+    }
+
+    @media screen and (max-width: 320px) {
+      .container { margin: 30px auto; padding: 30px 0 0; }
+      body { font-size: 60%; }
+      .files article li span { margin-top: 3px; }
+    }
+  -->
+  </style>
 </head>
 <body>
 <div class="container">
-    <header id="header"><% if (useBranding) { %>
-        <span class="site-name"><a href="http://xhtmlized.com/"><img src="http://email-static.xhtmlized.com/images/logo.png" width="169" height="30" alt="XHTMLized"></a></span><% } %>
-        <h1><%= projectName %></h1>
-        <p>Have a look at your files</p>
-    </header>
-    <!-- / header -->
-    <div id="content">
-        <section class="status">
-            <header>
-                <h2>Current Status</h2>
-            </header>
-            <article>
-                <h3 class="wip">In Development</h3>
-                <p>Started on <span><%= (new Date()).toString().split(' ').splice(1,3).join(' ') %></span></p>
-            </article>
-        </section>
-        <section class="files">
-            <header>
-                <h2>Front-end</h2>
-                <ul>
-                    <li class="done"><i></i>Completed</li>
-                    <li class="wip"><i></i>In Development</li>
-                    <li><i></i>Not Yet Started</li>
-                </ul>
-            </header>
-            <article>
-                <ul>
+  <header class="header"><% if (useBranding) { %>
+    <span class="site-name"><a href="http://xhtmlized.com/"><img src="http://email-static.xhtmlized.com/images/logo.png" width="169" height="30" alt="XHTMLized"></a></span><% } %>
+    <h1><%= projectName %></h1>
+    <p>Have a look at your files</p>
+  </header>
+  <!-- / header -->
+  <div class="content">
+    <section class="status">
+      <header>
+        <h2>Current Status</h2>
+      </header>
+      <article>
+        <h3 class="wip">In Development</h3>
+        <p>Started on <span><%= (new Date()).toString().split(' ').splice(1,3).join(' ') %></span></p>
+      </article>
+    </section>
+    <section class="files">
+      <header>
+        <h2>Front-end</h2>
+        <ul>
+          <li class="done"><i></i>Completed</li>
+          <li class="wip"><i></i>In Development</li>
+          <li><i></i>Not Yet Started</li>
+        </ul>
+      </header>
+      <article>
+        <ul>
 <!-- @@pageList -->
-                </ul>
-            </article>
-        </section><% if (isWP) { %>
-        <section class="files">
-            <header>
-                <h2>WordPress</h2>
-                <ul>
-                    <li class="done"><i></i>Completed</li>
-                    <li class="wip"><i></i>In Development</li>
-                    <li><i></i>Not Yet Started</li>
-                </ul>
-            </header>
-            <article>
-                <ul>
-                  <li><i class="fa fa-wordpress"></i><a href="wp/"><strong>WordPress Site</strong></a><i class="fa fa-check"></i></li>
-                  <li><i class="fa fa-lock"></i><a href="wp/wp-admin/"><strong>WordPress Admin</strong> </a>
-                    <p class="credentials">
-                      Username: admin <br>
-                      Password: password
-                    </p>
-                  </li>
-                </ul>
-            </article>
-        </section><% } %>
+        </ul>
+      </article>
+    </section><% if (isWP) { %>
+    <section class="files">
+      <header>
+        <h2>WordPress</h2>
+        <ul>
+          <li class="done"><i></i>Completed</li>
+          <li class="wip"><i></i>In Development</li>
+          <li><i></i>Not Yet Started</li>
+        </ul>
+      </header>
+      <article>
+        <ul>
+          <li><i class="fa fa-wordpress"></i><a href="wp/"><strong>WordPress Site</strong></a><i class="fa fa-check"></i></li>
+          <li><i class="fa fa-lock"></i><a href="wp/wp-admin/"><strong>WordPress Admin</strong> </a>
+            <p class="credentials">
+              Username: admin <br>
+              Password: password
+            </p>
+          </li>
+        </ul>
+      </article>
+    </section><% } %>
+  </div>
+  <!-- / content -->
 
-    </div>
-    <!-- / content -->
-    <aside id="sidebar">
-        <section>
-            <h3>Instructions</h3>
-            <p><strong>The information reported on the left is an outlined representation of your entire project. Please review it periodically to ensure it’s complete and up to date.</strong></p>
-            <p>When completed, all your deliverable files will be located inside the <code>dist</code> folder. No files found outside of that folder should be uploaded to your server (e.g. this file).</p>
-        </section>
-    </aside>
-    <!-- / sidebar -->
-    <footer id="footer"><% if (useBranding) { %>
-        <p>Thanks for choosing <a href="http://xhtmlized.com/">XHTMLized.com</a></p><% } %>
-        <p class="powered">Powered by <a href="https://github.com/xhtmlized/generator-xh">XH Generator</a></p>
+  <aside class="sidebar">
+    <section>
+      <h3>Instructions</h3>
+      <p><strong>The information reported on the left is an outlined representation of your entire project. Please review it periodically to ensure it’s complete and up to date.</strong></p>
+      <p>When completed, all your deliverable files will be located inside the <code>dist</code> folder. No files found outside of that folder should be uploaded to your server (e.g. this file).</p>
+    </section>
+  </aside>
+  <!-- / sidebar -->
 
-    </footer>
-    <!-- / footer -->
+  <footer class="footer"><% if (useBranding) { %>
+    <p>Thanks for choosing <a href="http://xhtmlized.com/">XHTMLized.com</a></p><% } %>
+    <p class="powered">Powered by <a href="https://github.com/xhtmlized/generator-xh">XH Generator</a></p>
+  </footer>
+  <!-- / footer -->
+
 </div>
 <!-- / container -->
 </body>

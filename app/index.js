@@ -37,6 +37,20 @@ var XhGenerator = yeoman.generators.Base.extend({
         message: 'Should XHTMLized branding be used?',
         default: true
       }, {
+        type: 'list',
+        name: 'reloader',
+        message: 'Which type of live reloader would you like to use?',
+        choices: ['LiveReload', 'BrowserSync', 'None'],
+        default: 'BrowserSync'
+      }, {
+        when: function (response) {
+          return response.reloader !== 'None';
+        },
+        type: 'confirm',
+        name: 'server',
+        message: 'Do you want to run development server?',
+        default: true
+      }, {
         type: 'confirm',
         name: 'ignoreDist',
         message: 'Add dist folder to the Git ignore list?',
@@ -45,8 +59,16 @@ var XhGenerator = yeoman.generators.Base.extend({
         type: 'list',
         name: 'cssPreprocessor',
         message: 'Which CSS preprocessor would you like to use?',
-        choices: ['SCSS', 'LESS'],
-        default: 'SCSS'
+        choices: [{
+          name: 'SCSS (LibSass; not fully compatible with Ruby version but much faster)',
+          value: 'LIBSASS'
+        }, {
+          value: 'LESS'
+        }, {
+          name: 'SCSS (Ruby)',
+          value: 'SCSS'
+        }],
+        default: 'LIBSASS'
       }, {
         type: 'confirm',
         name: 'isWP',
@@ -69,20 +91,6 @@ var XhGenerator = yeoman.generators.Base.extend({
           value: 'useCSS3Pie',
           checked: false
         }]
-      }, {
-        type: 'list',
-        name: 'reloader',
-        message: 'Which type of live reloader would you like to use?',
-        choices: ['LiveReload', 'BrowserSync', 'None'],
-        default: 'BrowserSync'
-      }, {
-        when: function (response) {
-          return response.reloader !== 'None';
-        },
-        type: 'confirm',
-        name: 'server',
-        message: 'Do you want to run development server?',
-        default: true
       }
     ];
 
@@ -181,7 +189,7 @@ var XhGenerator = yeoman.generators.Base.extend({
     }
 
     // SCSS
-    if (this.cssPreprocessor === 'SCSS') {
+    if (this.cssPreprocessor === 'SCSS' || this.cssPreprocessor === 'LIBSASS') {
       this.mkdir('src/scss');
       this.template('src/scss/_main.scss', 'src/scss/main.scss');
       this.copy('src/scss/_variables.scss', 'src/scss/_variables.scss');
