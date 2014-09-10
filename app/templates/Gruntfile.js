@@ -156,6 +156,17 @@ module.exports = function(grunt) {
       }
     },
 
+    remfallback: {
+      options: {
+        mediaQuery: true
+      },
+      main: {
+        files: {
+          '<%%= xh.dist %>/css/main.css': ['<%%= xh.dist %>/css/main.css']
+        }
+      },
+    },
+
     cssbeautifier: {
       files: ['<%%= xh.dist %>/css/*.css', '!<%%= xh.dist %>/css/libraries.min.css'],
       options : {
@@ -472,6 +483,7 @@ module.exports = function(grunt) {
     'sass',<% } %><% if (cssPreprocessor === 'LESS') { %>
     'less',<% } %>
     'autoprefixer',
+    'remfallback',
     'cssbeautifier',
     'search',
     'replace:css',

@@ -46,6 +46,7 @@ XH Generator creates a project structure, files and Grunt tasks which support mo
 - Support for both [LibSass](http://libsass.org/) (default) and [Ruby version](http://sass-lang.com/install) when using SCSS
 - Optional libraries like [Bootstrap](http://getbootstrap.com/), [Modernizr](http://modernizr.com/) & [CSS3 Pie](http://css3pie.com/)
 - Add vendor-prefixed CSS properties with [autoprefixer](https://github.com/nDmitry/grunt-autoprefixer)
+- Add fallback for rem units automatically with [remfallback](https://github.com/thomasdobber/grunt-remfallback) (set base font size for `<html>` tag - 100% is default 16px)
 - Live reload and browsers syncing with [BrowserSync](http://www.browsersync.io/) or LiveReload
 - Optional development server
 - Grunt tasks for prettifying built HTML / CSS / JS
