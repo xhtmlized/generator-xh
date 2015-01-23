@@ -79,6 +79,7 @@ var generate = {
 
     // additional task files
     this.copy('grunt/build-helpers.js');
+    this.copy('grunt/update-main.js');
   },
 
   projectInfo: function () {
