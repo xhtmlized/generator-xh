@@ -13,15 +13,7 @@ module.exports = function(grunt) {
 
     compileCSS: {
       files: [<% if (cssPreprocessor === 'SCSS' || cssPreprocessor === 'LIBSASS') { %>'<%%= xh.src %>/scss/**/*.scss'<% } %><% if (cssPreprocessor === 'LESS') { %>'<%%= xh.src %>/less/**/*.less'<% } %>],
-      tasks: ['build-css', 'update-main' <% if (isWP) { %>, 'copy:wp'<% } %>]<% if (reloader === 'LiveReload') { %>,
-      options: {
-        livereload: true
-      }<% } %>
-    },
-
-    html: {
-      files: ['<%%= xh.src %>/*.<%= extension %>'],
-      tasks: ['build-html']<% if (reloader === 'LiveReload') { %>,
+      tasks: ['build-css', 'updatemain' <% if (isWP) { %>, 'copy:wp'<% } %>]<% if (reloader === 'LiveReload') { %>,
       options: {
         livereload: true
       }<% } %>
