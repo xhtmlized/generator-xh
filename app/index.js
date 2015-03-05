@@ -106,6 +106,9 @@ var XhGenerator = yeoman.generators.Base.extend({
 
       // JS
       utils.generate.js.bind(this)();
+
+      // Styles structure
+      utils.generate.stylesStructure.bind(this)();
     },
 
     // WordPress

@@ -128,6 +128,10 @@ var generate = {
 
   css3pie: function () {
     this.copy('src/js/_PIE.htc', 'src/js/PIE.htc');
+  },
+
+  stylesStructure: function () {
+    this.copy('stylesStructure.json', 'stylesStructure.json');
   }
 };
 
