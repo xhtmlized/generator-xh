@@ -104,6 +104,10 @@ var XhGenerator = yeoman.generators.Base.extend({
       // Styles
       utils.generate.preprocessor.apply(this, this._preprocessorArgs);
 
+      if (this.features.useBootstrap) {
+        utils.generate.bootstrap.apply(this, this._preprocessorArgs);
+      }
+
       // JS
       utils.generate.js.bind(this)();
     },

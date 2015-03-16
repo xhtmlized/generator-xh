@@ -41,5 +41,19 @@
         { "name": "_wordpress.{{type}}" }
       ]
     }
+  ],
+
+  "bootstrap": [
+    {
+      "dirname": "vendor",
+      "children": [
+        {
+          "dirname": "bootstrap",
+          "children": [
+            { "name": "_variables.{{type}}" }
+          ]
+        }
+      ]
+    }
   ]
 }

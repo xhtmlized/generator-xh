@@ -102,12 +102,12 @@ On a typical project, you will work in `src` folder and check your work in `dist
 
 If you are joining an existing project which was set up using XH Generator (assuming that you have all [prerequisites](#prerequisites) installed), all you need to do is to clone the existing repository and install <% if (cssPreprocessor === 'SCSS') { %>Ruby, <% } %>Bower and npm dependencies.
 
-Let's imagine you have cloned/unpacked <%= projectName %> project into `<%= projectName %>` directory.
+Let's imagine you have cloned/unpacked <%= projectName %> project into `<%= _.slugify(projectName) %>` directory.
 
 First, change the directory to your cloned project:
 
 ```
-cd "<%= projectName %>"
+cd <%= _.slugify(projectName) %>
 ```
 
 <% if (cssPreprocessor === 'SCSS') { %>Install Ruby dependencies:

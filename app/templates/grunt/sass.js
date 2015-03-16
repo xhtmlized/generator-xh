@@ -10,7 +10,8 @@ module.exports = function(grunt) {
         outputStyle: 'expanded',
         imagePath: '../img',
         includePaths: [
-          '<%%= xh.src %>/bower_components'
+          '<%%= xh.src %>/bower_components'<% if (features.useBootstrap) { %>,
+          '<%%= xh.src %>/bower_components/bootstrap-sass/assets/stylesheets'<% } %>
         ],
         // for some reason sourceMaps will have correct path only when
         // absolute source map path is used

@@ -125,6 +125,10 @@ var generate = {
     helpers.createStructure.bind(this)(helpers.getStructure.bind(this)().sprites, 'src/' + type, type, underscore);
   },
 
+  bootstrap: function (type, underscore) {
+    helpers.createStructure.bind(this)(helpers.getStructure.bind(this)().bootstrap, 'src/' + type, type, underscore);
+  },
+
   css3pie: function () {
     this.copy('src/js/_PIE.htc', 'src/js/PIE.htc');
   }
