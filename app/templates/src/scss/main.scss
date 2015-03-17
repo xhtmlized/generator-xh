@@ -14,11 +14,13 @@
 @import "setup/variables";
 @import "setup/mixins";<% if (features.useSprites) { %>
 @import "setup/sprites";<% } %>
+// @@setup
 
 // Common styles & layouts
 @import "common/base";
 @import "common/utilities";
 @import "common/layout";<% if (isWP) { %>
 @import "common/wordpress";<% } %>
+// @@common
 
 // Components
