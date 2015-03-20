@@ -18,8 +18,15 @@ module.exports = function (grunt) {
     var self = this;
     var done = this.async();
     var mainStylesheet = this.options().main;
+    var mainStylesheetBuffer = '';
 
-    async.eachLimit(this.files, 4, function (file, next) {
+    fs.readFile(mainStylesheet, 'utf-8', 'r+', function (err, data) {
+      if (err) throw err;
+      mainStylesheetBuffer = data;
+      async.eachLimit(self.files, 5, updateMain, done);
+    });
+
+    function updateMain (file, next) {
       var src = file.src;
 
       if (!src) {
@@ -27,27 +34,25 @@ module.exports = function (grunt) {
       }
 
       for (var i = 0; i < src.length; i++) {
-        if (src[i] === mainStylesheet) {
-          return next();
+        if (src[i] !== mainStylesheet) {
+          addFileToMain.bind(self)(src[i]);
         }
-        addFileToMain.bind(self)(src[i]);
       }
 
-      next();
-    }, done);
+      fs.writeFile(mainStylesheet, mainStylesheetBuffer, 'utf-8', function (err) {
+        if (err) throw err;
+        next();
+      });
+    }
 
     function addFileToMain (file) {
       var root = path.join(grunt.config('xh').src, 'scss') + path.sep;
       var importFile = file.replace(root, '').replace(path.sep + '_', path.sep).replace(/\.(scss|less)$/, '');
-      var mainStylesheet = this.options().main;
 
-      fs.readFile(mainStylesheet, 'utf-8', 'r+', function (err, data) {
-        if (err) throw err;
-        writeToMainStylesheet(data, importFile);
-      });
+      writeToMainStylesheetBuffer(mainStylesheetBuffer, importFile);
     }
 
-    function writeToMainStylesheet (data, importFile) {
+    function writeToMainStylesheetBuffer (data, importFile) {
       var section = (importFile.split(path.sep) || ['default'])[0];
       var sectionComment = '// @@' + section;
       var importStylesheet = '@import "' + importFile + '";\n';
@@ -56,22 +61,16 @@ module.exports = function (grunt) {
 
       if (sectionCommentPosition !== -1 && !isImportStylesheetPresent) {
         writeInsideMain();
-      }
-      else if (data.indexOf(sectionComment) === -1) {
+      } else if (data.indexOf(sectionComment) === -1) {
         appendSectionToMain();
       }
 
       function writeInsideMain () {
-        var newValue = data.slice(0, sectionCommentPosition) + importStylesheet + data.slice(sectionCommentPosition);
-        fs.writeFile(mainStylesheet, newValue, 'utf-8', function (err) {
-          if (err) throw err;
-        });
+        mainStylesheetBuffer = data.slice(0, sectionCommentPosition) + importStylesheet + data.slice(sectionCommentPosition);
       }
 
       function appendSectionToMain () {
-        fs.appendFile(mainStylesheet, '\n' + importStylesheet + sectionComment, 'utf-8', function (err) {
-          if (err) throw err;
-        });
+        mainStylesheetBuffer += '\n\n' + importStylesheet + sectionComment;
       }
     }
   });

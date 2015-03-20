@@ -11,12 +11,22 @@ module.exports = function(grunt) {
       interrupt: true<% } %>
     },
 
+    updateCompileCSS: {
+      files: [<% if (cssPreprocessor === 'SCSS' || cssPreprocessor === 'LIBSASS') { %>'<%%= xh.src %>/scss/**/*.scss'<% } %><% if (cssPreprocessor === 'LESS') { %>'<%%= xh.src %>/less/**/*.less'<% } %>],
+      tasks: ['updatemain', 'build-css'<% if (isWP) { %>, 'copy:wp'<% } %>],
+      options: {
+        event: ['added', 'deleted'],
+      }
+    },
+
     compileCSS: {
       files: [<% if (cssPreprocessor === 'SCSS' || cssPreprocessor === 'LIBSASS') { %>'<%%= xh.src %>/scss/**/*.scss'<% } %><% if (cssPreprocessor === 'LESS') { %>'<%%= xh.src %>/less/**/*.less'<% } %>],
-      tasks: ['build-css', 'updatemain' <% if (isWP) { %>, 'copy:wp'<% } %>]<% if (reloader === 'LiveReload') { %>,
+      tasks: ['build-css'<% if (isWP) { %>, 'copy:wp'<% } %>],
       options: {
+        event: ['changed']<% if (reloader === 'LiveReload') { %>,
         livereload: true
-      }<% } %>
+        <% } %>
+      }
     },
 
     includes: {

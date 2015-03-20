@@ -10,6 +10,7 @@ module.exports = function (grunt) {
     replace: 'grunt-text-replace',
     validation: 'grunt-html-validation',<% if (features.useSprites) { %>
     sprite: 'grunt-spritesmith',<% } %>
+    updatemain: 'grunt/update-main.js'
   });
 
   // Project configuration.
@@ -59,6 +60,7 @@ module.exports = function (grunt) {
     'build-usemin-min',
     'build-html',
     'build-assets',
+    'updatemain',
     'build-css',
     'build-js',
     'build-beautify',<% if (isWP) { %>
