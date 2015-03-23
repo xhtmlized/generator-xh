@@ -29,6 +29,14 @@ module.exports = function(grunt) {
       }
     },
 
+    html: {
+      files: ['<%%= xh.src %>/*.<%= extension %>'],
+      tasks: ['build-html']<% if (reloader === 'LiveReload') { %>,
+      options: {
+        livereload: true
+      }<% } %>
+    },
+
     includes: {
       files: ['<%%= xh.includes %>/<%%= xh.usemin %>'],
       tasks: ['build-usemin', 'build-html']<% if (reloader === 'LiveReload') { %>,
