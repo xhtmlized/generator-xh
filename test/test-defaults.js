@@ -124,6 +124,16 @@ describe('XH Generator Defaults', function () {
     done();
   });
 
+  it('creates Bootstrap structure', function (done) {
+    var expectedFiles = [
+      'src/bootstrap.html',
+      'src/scss/vendor/bootstrap/_variables.scss'
+    ];
+
+    assert.file(expectedFiles);
+    done();
+  });
+
   it('creates sprites structure', function (done) {
     var expectedFiles = [
       'src/img/sprites/1x/.keep',

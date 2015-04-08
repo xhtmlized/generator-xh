@@ -125,7 +125,9 @@ var generate = {
     helpers.createStructure.bind(this)(helpers.getStructure.bind(this)().sprites, 'src/' + type, type, underscore);
   },
 
-  bootstrap: function (type, underscore) {
+  bootstrap: function (type, underscore, ext) {
+    this.template('src/_bootstrap.html', 'src/bootstrap.' + ext);
+
     helpers.createStructure.bind(this)(helpers.getStructure.bind(this)().bootstrap, 'src/' + type, type, underscore);
   },
 
