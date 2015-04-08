@@ -8,8 +8,12 @@ module.exports = function(grunt) {
     dist: {
       options: {
         style: 'expanded',
-        loadPath: '<%%= xh.src %>/bower_components/',
-        sourcemap: false
+        loadPath: [
+          '<%%= xh.src %>/bower_components/'<% if (features.useBootstrap) { %>,
+          '<%%= xh.src %>/bower_components/bootstrap-sass/assets/stylesheets/'<% } %>
+        ],
+        sourcemap: 'none',
+        unixNewlines: true
       },
       files: {
         '<%%= xh.dist %>/css/main.css': '<%%= xh.src %>/scss/main.scss'

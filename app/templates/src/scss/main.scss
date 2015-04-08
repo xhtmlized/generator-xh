@@ -8,12 +8,61 @@
    ========================================================================= */
 
 // Vendor Dependencies<% if (!features.useBootstrap) { %>
-@import "normalize.css/normalize.scss";<% } %>
+@import "normalize.css/normalize";<% } %>
 
 // Authored Dependencies
 @import "setup/variables";
 @import "setup/mixins";<% if (features.useSprites) { %>
 @import "setup/sprites";<% } %>
+
+<% if (features.useBootstrap) { %>// Overwritten Bootstrap variables
+@import "vendor/bootstrap/variables";
+
+/* =========================================================================
+   Bootstrap
+   ========================================================================= */
+
+// Core Bootstrap variables and mixins
+@import "bootstrap/variables";
+@import "bootstrap/mixins";
+
+// Reset and dependencies
+@import "bootstrap/normalize";
+@import "bootstrap/print";
+
+// Core CSS
+@import "bootstrap/scaffolding";
+@import "bootstrap/type";
+@import "bootstrap/code";
+@import "bootstrap/grid";
+@import "bootstrap/tables";
+@import "bootstrap/forms";
+@import "bootstrap/buttons";
+@import "bootstrap/utilities";
+@import "bootstrap/responsive-utilities";
+
+// Components
+//@import "bootstrap/component-animations";
+//@import "bootstrap/navs";
+//@import "bootstrap/navbar";
+
+/* =========================================================================
+   Bootstrap Overrides
+
+   For things that cannot be adjusted just using variables.
+   ========================================================================= */
+
+// Core CSS
+//@import "vendor/bootstrap/type";
+//@import "vendor/bootstrap/buttons";
+//@import "vendor/bootstrap/forms";
+
+// Components
+//@import "vendor/bootstrap/navbar";
+
+/* =========================================================================
+   Custom Styling
+   ========================================================================= */<% } %>
 
 // Common styles & layouts
 @import "common/base";

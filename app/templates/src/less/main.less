@@ -8,12 +8,59 @@
    ========================================================================= */
 
 // Vendor Dependencies<% if (!features.useBootstrap) { %>
-@import "normalize.css/normalize.less";<% } %>
+@import "normalize.css/normalize";<% } %>
 
 // Authored Dependencies
 @import "setup/variables";
 @import "setup/mixins";<% if (features.useSprites) { %>
 @import "setup/sprites";<% } %>
+
+<% if (features.useBootstrap) { %>/* =========================================================================
+   Bootstrap
+   ========================================================================= */
+
+// Core Bootstrap variables and mixins
+@import "bootstrap/less/variables";
+@import "bootstrap/less/mixins";
+
+// Reset and dependencies
+@import "bootstrap/less/normalize";
+@import "bootstrap/less/print";
+
+// Core CSS
+@import "bootstrap/less/scaffolding";
+@import "bootstrap/less/type";
+@import "bootstrap/less/code";
+@import "bootstrap/less/grid";
+@import "bootstrap/less/tables";
+@import "bootstrap/less/forms";
+@import "bootstrap/less/buttons";
+@import "bootstrap/less/utilities";
+@import "bootstrap/less/responsive-utilities";
+
+// Components
+//@import "bootstrap/less/component-animations";
+//@import "bootstrap/less/navs";
+//@import "bootstrap/less/navbar";
+
+/* =========================================================================
+   Bootstrap Overrides
+   ========================================================================= */
+
+// Overwritten Bootstrap variables
+@import "vendor/bootstrap/variables";
+
+// Core CSS
+//@import "vendor/bootstrap/type";
+//@import "vendor/bootstrap/buttons";
+//@import "vendor/bootstrap/forms";
+
+// Components
+//@import "vendor/bootstrap/navbar";
+
+/* =========================================================================
+   Custom Styling
+   ========================================================================= */<% } %>
 
 // Common styles & layouts
 @import "common/base";
