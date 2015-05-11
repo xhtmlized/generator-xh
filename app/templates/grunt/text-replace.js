@@ -33,15 +33,15 @@ module.exports = function(grunt) {
             return s[0].toUpperCase() + s.slice(1);
           }
 
-          for (var key in files) {
-            if (files.hasOwnProperty(key)) {
+          for (var file in files) {
+            if (files.hasOwnProperty(file)) {
 
-              var results = files[key];
+              var results = files[file];
 
-              for (var key in results) {
-                if (results.hasOwnProperty(key)) {
+              for (var result in results) {
+                if (results.hasOwnProperty(result)) {
 
-                  match = results[key]['match'];
+                  match = results[result]['match'];
                   match = match.replace(/"|'|@import|;|.scss|.less/gi, "").trim();
                   match = match.split('/').pop();
                   match = capitalize(match);
